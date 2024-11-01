@@ -20,7 +20,7 @@ async function commitWithGitmoji() {
         type: 'select',
         name: 'gitmoji',
         message: 'Choose a Gitmoji for this commit:',
-        choices: gitmojis.map(g => ({ name: g.name, value: g.value })),
+        choices: gitmojis.map(g => ({ name: g.name, value: g.value })), // nameに説明を含め、valueに絵文字だけ
     });
 
     // コミットメッセージの入力
@@ -31,7 +31,7 @@ async function commitWithGitmoji() {
     });
 
     // Gitmojiを先頭に付けたメッセージ
-    const fullMessage = `${gitmoji} ${message}`;
+    const fullMessage = `${gitmoji} ${message}`; // コミットには選択された絵文字のみが含まれる
 
     // コミットを実行
     try {
