@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-// 1から20までの数をループ
 for (let i = 1; i <= 20; i++) {
   let output = "";
 
@@ -12,7 +11,6 @@ for (let i = 1; i <= 20; i++) {
     output += "Buzz";
   }
 
-  // 数が"Fizz"でも"Buzz"でもない場合、数字をそのまま出力
   if (output === "") {
     output = i;
   }
