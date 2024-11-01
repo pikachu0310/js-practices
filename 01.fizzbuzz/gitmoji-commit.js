@@ -4,23 +4,23 @@ import { execSync } from 'child_process';
 
 const { prompt } = enquirer;
 
-// Gitmoji一覧（選択肢には説明を含め、コミットメッセージには絵文字のみを使用）
+// Gitmoji一覧（選択画面用のnameには説明付き、valueには絵文字のみ）
 const gitmojis = [
-    { name: '✨ Add new feature', value: '✨' },
-    { name: '🐛 Fix a bug', value: '🐛' },
-    { name: '🔨 Refactor code', value: '🔨' },
-    { name: '📝 Documentation update', value: '📝' },
+    { emoji: '✨', description: 'Add new feature' },
+    { emoji: '🐛', description: 'Fix a bug' },
+    { emoji: '🔨', description: 'Refactor code' },
+    { emoji: '📝', description: 'Documentation update' },
     // 他のGitmojiもここに追加可能
 ];
 
 // Gitmojiを選択してコミットメッセージを入力し、コミットを実行
 async function commitWithGitmoji() {
     // Gitmojiの選択
-    const { gitmoji } = await prompt({
+    const { selectedEmoji } = await prompt({
         type: 'select',
-        name: 'gitmoji',
+        name: 'selectedEmoji',
         message: 'Choose a Gitmoji for this commit:',
-        choices: gitmojis.map(g => ({ name: g.name, value: g.value })), // nameに説明を含め、valueに絵文字だけ
+        choices: gitmojis.map(g => ({ name: `${g.emoji} ${g.description}`, value: g.emoji })), // 表示には説明を含め、valueには絵文字のみ
     });
 
     // コミットメッセージの入力
@@ -31,7 +31,7 @@ async function commitWithGitmoji() {
     });
 
     // Gitmojiを先頭に付けたメッセージ
-    const fullMessage = `${gitmoji} ${message}`; // コミットには選択された絵文字のみが含まれる
+    const fullMessage = `${selectedEmoji} ${message}`; // コミットには選択された絵文字のみが含まれる
 
     // コミットを実行
     try {
