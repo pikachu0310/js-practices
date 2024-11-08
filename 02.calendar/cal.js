@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 import minimist from "minimist";
 import dayjs from "dayjs";
 import "dayjs/locale/ja.js";
@@ -13,18 +14,20 @@ const endOfMonth = dayjs(new Date(year, month + 1, 0));
 console.log(`      ${month + 1}月 ${year}`);
 console.log("日 月 火 水 木 金 土");
 
-let dayOfWeek = startOfMonth.day();
+const dayOfWeek = startOfMonth.getDay();
 let calendarOutput = " ".repeat(dayOfWeek * 3);
 
-for (let date = 1; date <= endOfMonth.date(); date++) {
-  calendarOutput += String(date).padStart(2, " ") + " ";
+const isEndOfWeek = (dayOfWeek, date) => (dayOfWeek + date) % 7 === 0;
 
-  if ((dayOfWeek + date) % 7 === 0) {
+for (let date = 1; date <= endOfMonth.getDate(); date++) {
+  calendarOutput += `${String(date).padStart(2, " ")} `;
+
+  if (isEndOfWeek(dayOfWeek, date)) {
     calendarOutput += "\n";
   }
 }
 
-if (calendarOutput.trim().length % 21 !== 0) {
+if (!calendarOutput.endsWith("\n")) {
   calendarOutput += "\n";
 }
 
