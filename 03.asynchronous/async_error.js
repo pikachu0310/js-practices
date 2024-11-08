@@ -1,7 +1,7 @@
 import sqlite3 from "sqlite3";
 import { run, get, close } from "./db_utils.js";
 
-async function executeWithoutError() {
+async function executeWithError() {
   const db = new sqlite3.Database(":memory:");
 
   try {
@@ -16,10 +16,25 @@ async function executeWithoutError() {
     ]);
     console.log(`レコードを追加しました。ID: ${result.lastID}`);
 
-    const row = await get(db, "SELECT * FROM books WHERE id = ?", [
-      result.lastID,
+    // 重複エラーのみ捕捉
+    try {
+      await run(db, "INSERT INTO books (title) VALUES (?)", [
+        "Async/awaitでの本",
+      ]);
+    } catch (err) {
+      if (err.message.includes("UNIQUE constraint failed")) {
+        console.error("重複したレコード追加エラー:", err.message);
+      } else {
+        throw err; // 他のエラーは再スロー
+      }
+    }
+
+    const nonExistentRow = await get(db, "SELECT * FROM books WHERE id = ?", [
+      999,
     ]);
-    console.log("取得したレコード:", row);
+    if (!nonExistentRow) {
+      console.log("指定されたIDのレコードは存在しません。");
+    }
 
     await run(db, "DROP TABLE books");
     console.log("テーブルを削除しました");
@@ -31,4 +46,4 @@ async function executeWithoutError() {
   }
 }
 
-await executeWithoutError();
+await executeWithError();
