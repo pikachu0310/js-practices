@@ -35,7 +35,7 @@ db.run(
               if (err) {
                 console.error("レコード取得時のエラー:", err.message);
               } else if (!row) {
-                console.error("エラー: 指定されたIDのレコードは存在しません。");
+                console.log("指定されたIDのレコードは存在しません。");
               } else {
                 console.log("取得したレコード:", row);
               }
