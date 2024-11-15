@@ -4,23 +4,13 @@ const db = new sqlite3.Database(":memory:");
 
 db.run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
-  (err) => {
-    if (err) {
-      console.error("テーブル作成時のエラー:", err.message);
-      return;
-    }
-
+  () => {
     console.log("テーブルを作成しました");
 
     db.run(
       "INSERT INTO books (title) VALUES (?)",
       ["Node.jsの基礎"],
-      function (err) {
-        if (err) {
-          console.error("レコード追加時のエラー:", err.message);
-          return;
-        }
-
+      function () {
         console.log(`レコードを追加しました。ID: ${this.lastID}`);
 
         db.get(
@@ -34,11 +24,7 @@ db.run(
 
             console.log("取得したレコード:", row);
 
-            db.run("DROP TABLE books", (err) => {
-              if (err) {
-                console.error("テーブル削除時のエラー:", err.message);
-                return;
-              }
+            db.run("DROP TABLE books", () => {
               console.log("テーブルを削除しました");
 
               db.close((err) => {
