@@ -1,26 +1,27 @@
 import { MemoStorage } from "./MemoStorage.js";
-import enquirer from "enquirer";
-
-const { prompt } = enquirer;
 
 export class MemoApp {
   constructor() {
     this.storage = new MemoStorage();
   }
 
-  async add() {
-    const { title, content } = await prompt([
-      {
-        type: "input",
-        name: "title",
-        message: "メモのタイトルを入力してください:",
-      },
-      {
-        type: "input",
-        name: "content",
-        message: "メモの内容を入力してください:",
-      },
-    ]);
+  async addFromStdin() {
+    const stdin = process.stdin;
+    stdin.setEncoding("utf-8");
+
+    let input = "";
+    for await (const chunk of stdin) {
+      input += chunk;
+    }
+
+    const lines = input.trim().split("\n");
+    if (lines.length < 2) {
+      console.log("エラー: タイトルと内容をそれぞれ1行ずつ入力してください。");
+      return;
+    }
+
+    const title = lines[0];
+    const content = lines.slice(1).join("\n");
     await this.storage.addMemo(title, content);
     console.log("メモが追加されました。");
   }
