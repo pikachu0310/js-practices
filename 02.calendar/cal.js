@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
 import minimist from "minimist";
-import dayjs from "dayjs";
-import "dayjs/locale/ja.js";
 
 const args = minimist(process.argv.slice(2));
-const month = args.m ? parseInt(args.m, 10) - 1 : dayjs().month();
-const year = args.y ? parseInt(args.y, 10) : dayjs().year();
 
-const startOfMonth = dayjs(new Date(year, month, 1));
-const endOfMonth = dayjs(new Date(year, month + 1, 0));
+const month = args.m ? args.m - 1 : new Date().getMonth();
+const year = args.y ? args.y : new Date().getFullYear();
+
+const startOfMonth = new Date(year, month, 1);
+const endOfMonth = new Date(year, month + 1, 0);
 
 console.log(`      ${month + 1}月 ${year}`);
 console.log("日 月 火 水 木 金 土");
