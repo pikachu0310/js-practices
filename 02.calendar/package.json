@@ -5,8 +5,10 @@
   },
   "devDependencies": {
     "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.1.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "minimist": "^1.2.8"
+  }
 }
