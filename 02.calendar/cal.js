@@ -4,8 +4,10 @@ import minimist from "minimist";
 
 const args = minimist(process.argv.slice(2));
 
-const month = args.m ? args.m - 1 : new Date().getMonth();
-const year = args.y ? args.y : new Date().getFullYear();
+const now = new Date();
+
+const month = args.m ? args.m - 1 : now.getMonth();
+const year = args.y ? args.y : now.getFullYear();
 
 const startOfMonth = new Date(year, month, 1);
 const endOfMonth = new Date(year, month + 1, 0);
