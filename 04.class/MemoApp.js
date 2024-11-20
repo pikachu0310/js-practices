@@ -1,4 +1,6 @@
 import { MemoStorage } from "./MemoStorage.js";
+import enquirer from "enquirer";
+const { prompt } = enquirer;
 
 export class MemoApp {
   constructor() {
@@ -35,32 +37,36 @@ export class MemoApp {
   async read() {
     const memos = await this.storage.listMemos();
     const choices = memos.map((memo) => ({
-      name: memo.id,
+      name: memo.id.toString(),
       message: memo.title,
     }));
+
     const { id } = await prompt({
       type: "select",
       name: "id",
       message: "表示したいメモを選択してください:",
       choices,
     });
-    const memo = await this.storage.getMemo(id);
+
+    const memo = await this.storage.getMemo(Number(id));
     console.log(`\n${memo.title}\n${memo.content}`);
   }
 
   async delete() {
     const memos = await this.storage.listMemos();
     const choices = memos.map((memo) => ({
-      name: memo.id,
+      name: memo.id.toString(),
       message: memo.title,
     }));
+
     const { id } = await prompt({
       type: "select",
       name: "id",
       message: "削除したいメモを選択してください:",
       choices,
     });
-    await this.storage.deleteMemo(id);
+
+    await this.storage.deleteMemo(Number(id));
     console.log("メモが削除されました。");
   }
 }
