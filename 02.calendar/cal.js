@@ -2,9 +2,7 @@
 
 import minimist from "minimist";
 
-const args = minimist(process.argv.slice(2), {
-  string: ["m", "y"],
-});
+const args = minimist(process.argv.slice(2));
 
 const month = args.m ? args.m - 1 : new Date().getMonth();
 const year = args.y ? args.y : new Date().getFullYear();
